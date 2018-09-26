@@ -1,0 +1,27 @@
+{
+  "name": "jest-environment-webdriver",
+  "version": "0.3.0",
+  "description": "Use Jest to run tests in Selenium WebDriver",
+  "author": "Alexey Raspopov",
+  "license": "MIT",
+  "repository": "alexeyraspopov/jest-webdriver",
+  "main": "modules/WebDriverEnvironment.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Alexey Raspopov",
+  "license": "MIT",
+  "dependencies": {
+    "jest-environment-node": "~22.1.4",
+    "selenium-webdriver": "^3.6.0"
+  },
+  "peerDependencies": {
+    "jest": "^22.1.4"
+  },
+  "devDependencies": {
+    "jest": "^22.1.4"
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}
