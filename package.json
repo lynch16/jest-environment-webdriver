@@ -9,9 +9,8 @@
   "scripts": {
     "test": "jest"
   },
-  "author": "Alexey Raspopov",
-  "license": "MIT",
   "dependencies": {
+    "chromedriver": "^2.42.0",
     "jest-environment-node": "~22.1.4",
     "selenium-webdriver": "^3.6.0"
   },

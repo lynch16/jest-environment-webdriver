@@ -1,5 +1,7 @@
 const NodeEnvironment = require('jest-environment-node');
 const { Builder, By, until } = require('selenium-webdriver');
+require('selenium-webdriver/chrome')
+require("chromedriver");
 
 class WebDriverEnvironment extends NodeEnvironment {
   constructor(config) {
