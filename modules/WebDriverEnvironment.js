@@ -7,13 +7,14 @@ class WebDriverEnvironment extends NodeEnvironment {
   constructor(config) {
     super(config);
     const options = config.testEnvironmentOptions || {};
-    this.browserName = options.browser || 'chrome';
-    this.seleniumAddress = options.seleniumAddress || null;
+    // Allow ENV to take precedence over package.json and then fallback to defaults
+    this.browserName = process.env.BROWSER ||  options.browser || 'chrome';
+    this.seleniumAddress = process.env.SELENIUM_ADDRESS || options.seleniumAddress || null;
   }
 
   async setup() {
     await super.setup();
-    
+
     let driver = new Builder();
     if (this.seleniumAddress) {
       driver = driver.usingServer(this.seleniumAddress);
