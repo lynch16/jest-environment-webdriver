@@ -2,6 +2,7 @@ const builder = {
   forBrowser: jest.fn(() => builder),
   usingServer: jest.fn(() => builder),
   build: jest.fn(() => new Driver()),
+  withCapabilities: jest.fn(() => builder),
 };
 
 const driver = {
@@ -23,4 +24,8 @@ const until = {};
 
 exports.Builder = Builder;
 exports.By = By;
+exports.Capabilities = {
+  chrome: jest.fn,
+  firefox: jest.fn
+};
 exports.until = until;

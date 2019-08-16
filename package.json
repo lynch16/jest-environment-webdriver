@@ -10,15 +10,17 @@
     "test": "jest"
   },
   "dependencies": {
-    "chromedriver": "^2.46.0",
-    "jest-environment-node": "~24.0.0",
-    "selenium-webdriver": "^3.6.0"
+    "jest-environment-node": "~24.0.0"
   },
   "peerDependencies": {
-    "jest": "^24.1.0"
+    "chromedriver": "latest",
+    "jest": "^24.1.0",
+    "selenium-webdriver": "latest"
   },
   "devDependencies": {
-    "jest": "^24.1.0"
+    "chromedriver": "latest",
+    "jest": "^24.1.0",
+    "selenium-webdriver": "^4.0.0-alpha.4"
   },
   "engines": {
     "node": ">=8"

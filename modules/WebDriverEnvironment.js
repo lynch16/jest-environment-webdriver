@@ -1,5 +1,5 @@
 const NodeEnvironment = require('jest-environment-node');
-const { Builder, By, until } = require('selenium-webdriver');
+const { Builder, By, until, Capabilities } = require('selenium-webdriver');
 require('selenium-webdriver/chrome')
 require('selenium-webdriver/firefox');
 
@@ -10,6 +10,7 @@ class WebDriverEnvironment extends NodeEnvironment {
     // Allow ENV to take precedence over package.json and then fallback to defaults
     this.browserName = process.env.BROWSER ||  options.browser || 'chrome';
     this.seleniumAddress = process.env.SELENIUM_ADDRESS || options.seleniumAddress || null;
+    this.browserOptions = options.browserOptions || {};
   }
 
   async setup() {
@@ -17,11 +18,25 @@ class WebDriverEnvironment extends NodeEnvironment {
 
     let driver = new Builder();
     if (this.seleniumAddress) {
-      driver = driver.usingServer(this.seleniumAddress);
+      driver.usingServer(this.seleniumAddress);
     }
-    driver = await driver.forBrowser(this.browserName).build();
+    driver.forBrowser(this.browserName);
 
-    this.driver = driver;
+    const args = [];
+    if (this.browserName === "chrome") {
+        const chromeCapabilities = Capabilities.chrome();
+        for (const key in this.browserOptions) {
+          let value = this.browserOptions[key];
+          value = typeof value === "string" ? value : undefined;
+          args.push(`--${key}${value ? `=${value}`: undefined}`)
+        }
+        if (args.length) {
+            chromeCapabilities.set('chromeOptions', { args });
+            driver.withCapabilities(chromeCapabilities);
+        }
+    }
+
+    this.driver = await driver.build();
 
     this.global.by = By;
     this.global.browser = driver;
