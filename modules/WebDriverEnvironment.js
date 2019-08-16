@@ -1,7 +1,7 @@
 const NodeEnvironment = require('jest-environment-node');
-const { Builder, By, until, Capabilities } = require('selenium-webdriver');
-require('selenium-webdriver/chrome')
-require('selenium-webdriver/firefox');
+const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome')
+const firefox = require('selenium-webdriver/firefox');
 
 class WebDriverEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -18,25 +18,38 @@ class WebDriverEnvironment extends NodeEnvironment {
 
     let driver = new Builder();
     if (this.seleniumAddress) {
-      driver.usingServer(this.seleniumAddress);
+      driver = driver.usingServer(this.seleniumAddress);
     }
-    driver.forBrowser(this.browserName);
+    driver = driver.forBrowser(this.browserName);
 
-    const args = [];
     if (this.browserName === "chrome") {
-        const chromeCapabilities = Capabilities.chrome();
-        for (const key in this.browserOptions) {
-          let value = this.browserOptions[key];
-          value = typeof value === "string" ? value : undefined;
-          args.push(`--${key}${value ? `=${value}`: undefined}`)
-        }
-        if (args.length) {
-            chromeCapabilities.set('chromeOptions', { args });
-            driver.withCapabilities(chromeCapabilities);
-        }
+      const chromeOptions = new chrome.Options();
+      for (const key in this.browserOptions) {
+        const value = this.browserOptions[key];
+          if (value) {
+            const args = typeof value === "string" ? value : undefined;
+            const fn = chromeOptions[key];
+            typeof fn === "function" && fn(args);
+            console.log("Applying config", key);
+          }
+      }
+      driver = driver.setChromeOptions(chromeOptions);
+    } else {
+      const ffOptions = new firefox.Options();
+      for (const key in this.browserOptions) {
+        const value = this.browserOptions[key];
+          if (value) {
+            const args = typeof value === "string" ? value : undefined;
+            const fn = ffOptions[key];
+            typeof fn === "function" && fn(args);
+            console.log("Applying config", key);
+          }
+      }
+      driver = driver.setFirefoxOptions(ffOptions);
     }
 
-    this.driver = await driver.build();
+    driver = await driver.build();
+    this.driver = driver;
 
     this.global.by = By;
     this.global.browser = driver;
