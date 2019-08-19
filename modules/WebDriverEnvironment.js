@@ -22,31 +22,31 @@ class WebDriverEnvironment extends NodeEnvironment {
     }
     driver = driver.forBrowser(this.browserName);
 
-    // if (this.browserName === "chrome") {
-    //   const chromeOptions = new chrome.Options();
-    //   for (const key in this.browserOptions) {
-    //     const value = this.browserOptions[key];
-    //       if (value) {
-    //         const args = typeof value === "string" ? value : undefined;
-    //         const fn = chromeOptions[key];
-    //         typeof fn === "function" && fn(args);
-    //         console.log("Applying config", key);
-    //       }
-    //   }
-    //   driver = driver.setChromeOptions(chromeOptions);
-    // } else {
-    //   const ffOptions = new firefox.Options();
-    //   for (const key in this.browserOptions) {
-    //     const value = this.browserOptions[key];
-    //       if (value) {
-    //         const args = typeof value === "string" ? value : undefined;
-    //         const fn = ffOptions[key];
-    //         typeof fn === "function" && fn(args);
-    //         console.log("Applying config", key);
-    //       }
-    //   }
-    //   driver = driver.setFirefoxOptions(ffOptions);
-    // }
+    if (this.browserName === "chrome") {
+      const chromeOptions = new chrome.Options();
+      for (const key in this.browserOptions) {
+        const value = this.browserOptions[key];
+          if (value) {
+            const args = typeof value === "string" ? value : undefined;
+            const fn = chromeOptions[key];
+            typeof fn === "function" && fn(args);
+            console.log("Applying config", key);
+          }
+      }
+      driver = driver.setChromeOptions(chromeOptions);
+    } else {
+      const ffOptions = new firefox.Options();
+      for (const key in this.browserOptions) {
+        const value = this.browserOptions[key];
+          if (value) {
+            const args = typeof value === "string" ? value : undefined;
+            const fn = ffOptions[key];
+            typeof fn === "function" && fn(args);
+            console.log("Applying config", key);
+          }
+      }
+      driver = driver.setFirefoxOptions(ffOptions);
+    }
 
     driver = await driver.build();
     this.driver = driver;
